@@ -6,6 +6,10 @@ const supabase = require("./supabaseClient");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`App is listening on port ${PORT}`);
+});
+
 app.use(cors());
 app.use(express.json({ limit: "100kb" }));
 app.use(express.static(path.join(__dirname, "public")));
