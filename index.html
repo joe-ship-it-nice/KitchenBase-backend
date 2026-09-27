@@ -1,1 +1,488 @@
-Express starter
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>KitchenBase API Documentation</title>
+    <link rel="icon" type="image/png" href="/favicon.png" />
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #f5f7f2;
+            color: #243528;
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+        }
+
+        header {
+            padding: 48px 24px;
+            background: #245c3b;
+            color: white;
+            text-align: center;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 40px;
+        }
+
+        main {
+            max-width: 1000px;
+            margin: auto;
+            padding: 24px;
+        }
+
+        section {
+            margin-bottom: 24px;
+            padding: 24px;
+            background: white;
+            border: 1px solid #dce5d8;
+            border-radius: 14px;
+        }
+
+        h2 {
+            margin-top: 0;
+        }
+
+        a {
+            color: #245c3b;
+        }
+
+        pre {
+            padding: 16px;
+            overflow-x: auto;
+            background: #17281d;
+            color: #e6f5e9;
+            border-radius: 8px;
+        }
+
+        code {
+            overflow-wrap: anywhere;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #dce5d8;
+            text-align: left;
+        }
+
+        th {
+            background: #edf4e9;
+        }
+
+        footer {
+            padding: 24px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1> 👨‍🍳 KitchenBase API 👨‍🍳</h1>
+        <p>Behold, a basically non-dysfunctional API for Joe-m Masak Restaurant
+        </p>where no meat is served to vegetarians, and no pork is served to Halal consumers.</p>
+    </header>
+
+    <main>
+        <section>
+            <h2>Getting started</h2>
+            <p>
+                Locally, the default is <code>http://localhost:3000</code>.
+            </p>
+            <p>
+                GET requests can be opened in a browser or Postman.
+                For POST requests in Postman, choose
+                Body → raw → JSON.
+            </p>
+            <p>
+                Send POST requests in Postman.
+                These assignment endpoints do not require a login.
+            </p>
+        </section>
+
+        <section>
+            <h2>API features</h2>
+            <ul>
+                <li>View all recipes or find a recipe by ID.</li>
+                <li>Add recipes and authors.</li>
+                <li>Browse halal, non-halal and vegetarian categories.</li>
+                <li>Store records in a Supabase PostgreSQL database.</li>
+                <li>Link recipes to users and categories using foreign keys.</li>
+                <li>Validate input and return JSON error messages.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Endpoints</h2>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Method</th>
+                            <th>Path</th>
+                            <th>Purpose</th>
+                            <th>Success</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>GET</td>
+                            <td><code>/recipes</code></td>
+                            <td>Get all recipes</td>
+                            <td>200</td>
+                        </tr>
+                        <tr>
+                            <td>GET</td>
+                            <td><code>/recipes/:id</code></td>
+                            <td>Get one recipe by its ID</td>
+                            <td>200</td>
+                        </tr>
+                        <tr>
+                            <td>POST</td>
+                            <td><code>/recipes</code></td>
+                            <td>Add a recipe</td>
+                            <td>201</td>
+                        </tr>
+                        <tr>
+                            <td>GET</td>
+                            <td><code>/users</code></td>
+                            <td>Get all users</td>
+                            <td>200</td>
+                        </tr>
+                        <tr>
+                            <td>POST</td>
+                            <td><code>/users</code></td>
+                            <td>Add a user</td>
+                            <td>201</td>
+                        </tr>
+                        <tr>
+                            <td>GET</td>
+                            <td><code>/categories</code></td>
+                            <td>Get all categories</td>
+                            <td>200</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section>
+            <h2>GET /recipes</h2>
+            <p>No request body is needed. Returns an array of recipe objects.</p>
+            <p>Example response, shortened to one record:</p>
+            <pre>[
+    {
+        "id": 1,
+        "name": "Halal Chicken Rice",
+        "ingredients": "Halal-certified chicken, rice, ginger, garlic, salt",
+        "author": 1,
+        "category": 1,
+        "instructions": "Using halal ingredients and utensils, cook the chicken thoroughly. Cook rice with ginger and garlic. Serve together."
+    },
+    {
+        "id": 2,
+        "name": "Pork Fried Rice",
+        "ingredients": "Pork, rice, egg, garlic, soy sauce",
+        "author": 2,
+        "category": 2,
+        "instructions": "Cook the pork thoroughly. Add garlic and egg, then stir-fry with rice and soy sauce."
+    },
+    {
+        "id": 3,
+        "name": "Vegetable Stir-Fry",
+        "ingredients": "Broccoli, carrots, mushrooms, garlic, vegetable oil, salt",
+        "author": 3,
+        "category": 3,
+        "instructions": "Heat vegetable oil. Add garlic and vegetables. Stir-fry until cooked and season with salt."
+    }
+]</pre>
+            <p>
+                The actual response wraps the recipe objects in an array:
+                <code>[{...}, {...}]</code>. An empty table returns <code>[]</code>.
+            </p>
+        </section>
+
+        <section>
+            <h2>GET /recipes/:id</h2>
+            <p>
+                Replace <code>:id</code> with a positive integer.
+                For example: <td><code>/recipes/1</code></td>.
+            </p>
+            <p>
+                Returns one recipe object with the same fields shown above.
+                An invalid ID returns 400; a missing recipe returns 404.
+            </p>
+        </section>
+
+        <section>
+            <h2>POST /recipes</h2>
+            <p>All five fields below are required:</p>
+            <ul>
+                <li><code>name</code>: non-empty text.</li>
+                <li><code>ingredients</code>: non-empty text.</li>
+                <li><code>author</code>: an existing user's integer ID.</li>
+                <li><code>category</code>: an existing category's integer ID.</li>
+                <li><code>instructions</code>: non-empty text.</li>
+            </ul>
+
+            <p>Example JSON request:</p>
+            <pre>{
+  "name": "Vegetable Fried Rice",
+  "ingredients": "Rice, carrots, peas, soy sauce, vegetable oil",
+  "author": 1,
+  "category": 3,
+  "instructions": "Cook the vegetables, add rice and soy sauce, then stir-fry."
+}</pre>
+
+            <p>
+                Check <code>/users</code> and <code>/categories</code>
+                for valid IDs before submitting.
+            </p>
+            <p>
+                Returns 201 and the saved recipe object, including its generated
+                <code>id</code>.
+            </p>
+        </section>
+
+        <section>
+            <h2>GET /users</h2>
+            <p>Returns an array of users.</p>
+            <p>Example response:</p>
+            <pre>[
+    {
+        "id": 1,
+        "username": "Joe",
+        "email": "joe@food.com"
+    },
+    {
+        "id": 2,
+        "username": "Joel",
+        "email": "joel@food.com"
+    },
+    {
+        "id": 3,
+        "username": "Joseph",
+        "email": "joseph@food.com"
+    }
+]</pre>
+            <p>An empty table returns <code>[]</code>.</p>
+        </section>
+
+        <section>
+            <h2>POST /users</h2>
+            <p>
+                Requires a non-empty <code>username</code> and a valid
+                <code>email</code>. Both must be unique.
+            </p>
+            <p>Example JSON request:</p>
+            <pre>{
+  "username": "ChefJo",
+  "email": "chefjo@food.com"
+}</pre>
+            <p>
+                Returns 201 and the saved user's <code>id</code>,
+                <code>username</code> and <code>email</code>.
+                A duplicate username or email returns 409.
+            </p>
+        </section>
+
+        <section>
+            <h2>GET /categories</h2>
+            <p>Example response using the initial category records:</p>
+            <pre>[
+  { "id": 1, "name": "halal" },
+  { "id": 2, "name": "non-halal" },
+  { "id": 3, "name": "vegetarian" }
+]</pre>
+        </section>
+
+        <section>
+            <h2>Error responses</h2>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Status</th>
+                            <th>Meaning</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>400</td>
+                            <td>Invalid input, malformed JSON, or nonexistent author/category</td>
+                        </tr>
+                        <tr>
+                            <td>404</td>
+                            <td>Recipe or endpoint not found</td>
+                        </tr>
+                        <tr>
+                            <td>409</td>
+                            <td>Username or email already exists</td>
+                        </tr>
+                        <tr>
+                            <td>413</td>
+                            <td>Request body exceeds the 100 KB limit</td>
+                        </tr>
+                        <tr>
+                            <td>500</td>
+                            <td>Unexpected server or database error</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>Example error body:</p>
+            <pre>{
+  "message": "Recipe not found."
+}</pre>
+
+
+            <section>
+                <h2>Using Foreign Keys to Connect Tables</h2>
+
+                <p>
+                    Each recipe connects to a user and a category through two
+                    foreign keys: <code>author</code> and <code>category</code>.
+                </p>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Foreign key</th>
+                                <th>References</th>
+                                <th>Purpose</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>recipe.author</code></td>
+                                <td><code>users.id</code></td>
+                                <td>Identifies the user who created the recipe.</td>
+                            </tr>
+                            <tr>
+                                <td><code>recipe.category</code></td>
+                                <td><code>categories.id</code></td>
+                                <td>Identifies the recipe's food category.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p>
+                    In our sample data, Halal Chicken Rice has
+                    <code>author = 1</code> and <code>category = 1</code>.
+                    These values link it to Joe in the users table and halal
+                    in the categories table.
+                </p>
+
+                <p>
+                    Multiple recipes can share the same author or category.
+                    However, every author and category ID must exist in its
+                    referenced table. The database rejects invalid links.
+                </p>
+
+                <h3>Viewing the connected records</h3>
+
+                <p>
+                    Run this SQL in Supabase's SQL Editor to display recipes
+                    alongside their author names and category names:
+                </p>
+
+                <pre>SELECT
+  recipe.id,
+  recipe.name,
+  users.username AS author_name,
+  categories.name AS category_name
+FROM public.recipe
+JOIN public.users
+  ON recipe.author = users.id
+JOIN public.categories
+  ON recipe.category = categories.id
+ORDER BY recipe.id;</pre>
+
+                <p>
+                    The foreign keys enforce valid relationships.
+                    The JOIN query uses those relationships to display
+                    information from all three tables together.
+                </p>
+
+                <h3>Connected Recipe Records</h3>
+
+                <p>
+                    This table shows recipes joined with their authors and categories
+                    using the author and category foreign keys.
+                </p>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Recipe name</th>
+                                <th>Author name</th>
+                                <th>Category name</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Halal Chicken Rice</td>
+                                <td>Joe</td>
+                                <td>halal</td>
+                            </tr>
+
+                            <tr>
+                                <td>2</td>
+                                <td>Pork Fried Rice</td>
+                                <td>Joel</td>
+                                <td>non-halal</td>
+                            </tr>
+
+                            <tr>
+                                <td>3</td>
+                                <td>Vegetable Stir-Fry</td>
+                                <td>Joseph</td>
+                                <td>vegetarian</td>
+                            </tr>
+
+                            <tr>
+                                <td>4</td>
+                                <td>Vegetable Fried Rice</td>
+                                <td>Joe</td>
+                                <td>vegetarian</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </section>
+
+        </section>
+    </main>
+
+    <footer>KitchenBase · by Joe Onn Lim<footer>
+
+</body>
+
+</html>
