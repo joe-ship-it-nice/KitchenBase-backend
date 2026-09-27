@@ -179,7 +179,6 @@ app.use((req, res) => {
 });
 
 // Handle request and database errors.
-// Keep this AFTER all routes.
 app.use((error, req, res, next) => {
   if (error.type === "entity.parse.failed") {
     return res.status(400).json({
